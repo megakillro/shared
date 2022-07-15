@@ -9,4 +9,4 @@ import { NgModule } from '@angular/core';
   exports: [
   ]
 })
-export class CommonModule { }
+export class MegakillCommonModule { }
