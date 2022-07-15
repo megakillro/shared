@@ -3,5 +3,39 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
+    "@megakill/common": {
+      "projectType": "library",
+      "root": "projects/megakill/common",
+      "sourceRoot": "projects/megakill/common/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/megakill/common/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/megakill/common/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/megakill/common/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/megakill/common/src/test.ts",
+            "tsConfig": "projects/megakill/common/tsconfig.spec.json",
+            "karmaConfig": "projects/megakill/common/karma.conf.js"
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "analytics": "ea883763-c726-41d4-899e-46d6c7edfd65"
   }
 }
