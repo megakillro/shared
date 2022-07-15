@@ -4,3 +4,4 @@
 
 export * from './lib/formatter.service';
 export * from './lib/common.module';
+export * from './lib/ro-date-formats.constant';
