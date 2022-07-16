@@ -23,11 +23,12 @@ export class LocalFilesService {
   download(filePath: string) {
     const linkParts = filePath.split('/');
     const filename = linkParts[linkParts.length - 1];
+    
     return this.http.get(this.baseUrl + 'download?filePath=' + filePath, { responseType: 'arraybuffer' }).toPromise().then((res) => {
       const arrayBuffer = res as ArrayBuffer;
       const blob = new Blob([arrayBuffer]);
       saveAs(blob, filename)
       return res;
-    })
+    });
   }
 }

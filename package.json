@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build @megakill/common",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "release": "ng build @megakill/common; (cd dist/megakill/common && npm publish --access public)"

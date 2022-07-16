@@ -18,6 +18,7 @@ export class S3Service {
   async download(link: string) {
     const linkParts = link.split('/');
     const filename = linkParts[linkParts.length - 1];
+    
     return this.http.get(this.baseUrl + 'download?link=' + link, { responseType: 'arraybuffer' }).toPromise().then((res) => {
       const arrayBuffer = res as ArrayBuffer;
       const blob = new Blob([arrayBuffer]);
