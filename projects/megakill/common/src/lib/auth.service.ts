@@ -1,10 +1,9 @@
+import { MegakillCommonModuleConfig } from './config';
 import { Injectable } from '@angular/core';
-import createAuth0Client from '@auth0/auth0-spa-js';
-import Auth0Client from '@auth0/auth0-spa-js/dist/typings/Auth0Client';
+import createAuth0Client, { GetTokenSilentlyVerboseResponse, Auth0Client } from '@auth0/auth0-spa-js';
 import { from, of, Observable, BehaviorSubject, combineLatest, throwError } from 'rxjs';
 import { tap, catchError, concatMap, shareReplay } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +12,10 @@ export class AuthService {
   // Create an observable of Auth0 instance of client
   auth0Client$ = (from(
     createAuth0Client({
-      domain: environment.auth0.domain,
-      client_id: environment.auth0.client_id,
+      domain: this.config.auth.domain,
+      client_id: this.config.auth.client_id,
       redirect_uri: `${window.location.origin}/manage/callback`,
-      audience: environment.auth0.audience
+      audience: this.config.auth.audience
     })
   ) as Observable<Auth0Client>).pipe(
     shareReplay(1), // Every subscription receives the same shared value
@@ -37,15 +36,16 @@ export class AuthService {
   private userProfileSubject$ = new BehaviorSubject<any>(null);
   userProfile$ = this.userProfileSubject$.asObservable();
   // Create a local property for login status
-  loggedIn: boolean = null;
+  loggedIn: boolean = false;
 
-  constructor(private router: Router) { 
-    console.log(environment);
-  }
+  constructor(
+    private config: MegakillCommonModuleConfig,
+    private router: Router
+  ) { }
 
   // When calling, options can be passed if desired
   // https://auth0.github.io/auth0-spa-js/classes/auth0client.html#getuser
-  getUser$(options?): Observable<any> {
+  getUser$(options?: any): Observable<any> {
     return this.auth0Client$.pipe(
       concatMap((client: Auth0Client) => from(client.getUser(options))),
       tap(user => this.userProfileSubject$.next(user))
@@ -112,7 +112,7 @@ export class AuthService {
     });
   }
 
-  getTokenSilently$(options?): Observable<string> {
+  getTokenSilently$(options?: any): Observable<GetTokenSilentlyVerboseResponse> {
     return this.auth0Client$.pipe(
       concatMap((client: Auth0Client) => from(client.getTokenSilently(options)))
     );
@@ -123,7 +123,7 @@ export class AuthService {
     this.auth0Client$.subscribe((client: Auth0Client) => {
       // Call method to log out
       client.logout({
-        client_id: environment.auth0.client_id,
+        client_id: this.config.auth.client_id,
         returnTo: `${window.location.origin}`
       });
     });

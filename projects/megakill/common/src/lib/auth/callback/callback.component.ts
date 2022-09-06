@@ -1,5 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import {  MegakillCommonModuleConfig } from '../../config';
+import { AuthService } from './../../auth.service';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'megakill-callback',
@@ -7,10 +7,10 @@ import {  MegakillCommonModuleConfig } from '../../config';
 })
 export class CallbackComponent implements OnInit {
   constructor(
-    @Inject('MegakillCommonModuleConfig') private config: MegakillCommonModuleConfig
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
-    this.config.AuthService.handleAuthCallback();
+    this.authService.handleAuthCallback();
   }
 }

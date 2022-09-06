@@ -44,7 +44,7 @@ export class OkPortalDialogComponent implements OnInit {
     );
   }
 
-  createInjector(dataToPass): PortalInjector {
+  createInjector(dataToPass: any): PortalInjector {
     const injectorTokens = new WeakMap();
     injectorTokens.set(CONTAINER_DATA, dataToPass);
     return new PortalInjector(this.injector, injectorTokens);
@@ -57,6 +57,6 @@ export class OkPortalDialogComponent implements OnInit {
     console.log(event)
     this.eventSelectedRow = event.instance.selectedRow.subscribe(el => {
       console.log(el)
-    })
+    });
   }
 }
