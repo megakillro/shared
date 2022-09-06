@@ -1,0 +1,7 @@
+<h1 mat-dialog-title>{{title}}</h1>
+<div mat-dialog-content style="height: 100%">
+        <ng-template [cdkPortalOutlet]="componentPortal" (attached)="onPortalAttached($event)"></ng-template>
+</div>
+<div mat-dialog-actions align="end">
+        <button mat-button [mat-dialog-close]="true" cdkFocusInitial color="primary">OK</button>
+</div>

@@ -1,5 +1,6 @@
 export class MegakillCommonModuleConfig {
-	environment: any
+	environment: any;
+	AuthService: any;
   }
 
 export function getBaseUrl(config?: MegakillCommonModuleConfig) {
