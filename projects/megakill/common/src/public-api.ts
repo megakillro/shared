@@ -11,3 +11,4 @@ export * from './lib/ro-date-formats.constant';
 export * from './lib/ag-grid-locale-text-ro.constant';
 export * from './lib/auth/callback/callback.component';
 export * from './lib/injection-tokens';
+export * from './lib/auth.guard';
