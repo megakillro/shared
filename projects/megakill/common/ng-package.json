@@ -6,6 +6,7 @@
   },
   "allowedNonPeerDependencies": [
     "file-saver",
-    "moment-timezone"
+    "moment-timezone",
+    "@auth0/auth0-spa-js"
   ]
 }

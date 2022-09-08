@@ -1,6 +1,6 @@
 {
   "name": "@megakill/common",
-  "version": "0.0.14",
+  "version": "0.0.18",
   "peerDependencies": {
     "@angular/common": "^14.0.0",
     "@angular/core": "^14.0.0",
@@ -9,7 +9,8 @@
   "dependencies": {
     "tslib": "^2.3.0",
     "file-saver": "^2.0.5",
-    "moment-timezone": "^0.5.34"
+    "moment-timezone": "^0.5.34",
+    "@auth0/auth0-spa-js": "^1.22.3"
   },
   "devDependencies": {
     "@types/file-saver": "^2.0.5"

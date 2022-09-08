@@ -1,5 +1,5 @@
 import { MegakillCommonModuleConfig } from './config';
-import { Injectable } from '@angular/core';
+import { Injectable, Optional } from '@angular/core';
 import createAuth0Client, { GetTokenSilentlyVerboseResponse, Auth0Client } from '@auth0/auth0-spa-js';
 import { from, of, Observable, BehaviorSubject, combineLatest, throwError } from 'rxjs';
 import { tap, catchError, concatMap, shareReplay } from 'rxjs/operators';
@@ -39,8 +39,8 @@ export class AuthService {
   loggedIn: boolean = false;
 
   constructor(
-    private config: MegakillCommonModuleConfig,
-    private router: Router
+    private router: Router,
+    @Optional() private config?: MegakillCommonModuleConfig
   ) { }
 
   // When calling, options can be passed if desired
