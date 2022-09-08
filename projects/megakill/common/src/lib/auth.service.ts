@@ -12,10 +12,10 @@ export class AuthService {
   // Create an observable of Auth0 instance of client
   auth0Client$ = (from(
     createAuth0Client({
-      domain: this.config.auth.domain,
-      client_id: this.config.auth.client_id,
+      domain: this.config?.auth.domain,
+      client_id: this.config?.auth.client_id,
       redirect_uri: `${window.location.origin}/manage/callback`,
-      audience: this.config.auth.audience
+      audience: this.config?.auth.audience
     })
   ) as Observable<Auth0Client>).pipe(
     shareReplay(1), // Every subscription receives the same shared value
