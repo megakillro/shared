@@ -1,10 +1,12 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { MegakillCommonModuleConfig } from './config';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
   ],
   imports: [
+    MatIconModule
   ],
   exports: [
   ]

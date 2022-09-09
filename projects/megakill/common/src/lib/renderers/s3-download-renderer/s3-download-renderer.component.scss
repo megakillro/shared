@@ -1,0 +1,41 @@
+@import 'variables';
+
+div.download {
+    font-size: 12px;
+    display: flex;
+    place-content: center start;
+    margin-left: -5px;
+    color: $primary;
+    border-radius: 4px;
+
+    &:hover {
+        color: darken($primary, 10%);
+        cursor: pointer;
+    }
+
+    &:active, &:focus {
+        color: darken($primary, 20%);
+    }
+
+    &:visited {
+        color: $primary;
+    }
+
+    mat-icon {
+        transform: scale(0.8);
+        margin-top: 10px;
+        margin-right: 5px;
+        margin-left: -2px;
+    }
+}
+
+div.no-file {
+    margin-left: -5px;
+    display: flex;
+    place-content: center start;
+
+    mat-icon {
+        margin-top: 10px;
+        margin-right: 5px;
+    }
+}

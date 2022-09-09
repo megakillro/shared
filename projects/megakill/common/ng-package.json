@@ -7,6 +7,8 @@
   "allowedNonPeerDependencies": [
     "file-saver",
     "moment-timezone",
-    "@auth0/auth0-spa-js"
+    "@auth0/auth0-spa-js",
+    "ag-grid-angular",
+    "rxjs"
   ]
 }
