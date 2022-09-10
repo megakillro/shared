@@ -7,7 +7,7 @@
     "build": "ng build @megakill/common",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "release": "ng build @megakill/common && (cd projects/megakill/common && npm version patch; git add package.json; git commit -m \"feat: release\"; git push; npm publish --access public)"
+    "release": "(cd projects/megakill/common && npm version patch) && ng build @megakill/common && git add . --all && git commit -m \"feat: release\" && git push && (cd dist/megakill/common && npm publish --access public)"
   },
   "private": true,
   "dependencies": {
