@@ -1,0 +1,24 @@
+import { Component } from '@angular/core';
+import * as i0 from "@angular/core";
+import * as i1 from "../../s3.service";
+export class S3PhotoRenderer {
+    constructor(s3Service) {
+        this.s3Service = s3Service;
+    }
+    agInit(params) {
+        this.params = params;
+    }
+    refresh() {
+        return false;
+    }
+    download() {
+        return this.s3Service.download(this.params.value);
+    }
+}
+S3PhotoRenderer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: S3PhotoRenderer, deps: [{ token: i1.S3Service }], target: i0.ɵɵFactoryTarget.Component });
+S3PhotoRenderer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "14.0.6", type: S3PhotoRenderer, selector: "megakill-s3-photo-renderer", ngImport: i0, template: "<div color=\"primary\" (click)=\"download()\" *ngIf=\"params.value\" class=\"download\">\n    <!-- TO DO: replace icon with SVG -->\n    <!-- <mat-icon>visibility</mat-icon> -->\n    <!-- TO DO: i18n -->\n    <span>VIZUALIZEAZ\u0102 FOTOGRAFIA</span>\n</div>", styles: ["div.download{font-size:12px;display:flex;place-content:center start;margin-left:-5px;color:var(--primary);border-radius:4px}div.download:hover{cursor:pointer}div.download:visited{color:var(--primary)}div.download mat-icon{transform:scale(.8);margin-top:10px;margin-right:5px;margin-left:-2px}div.no-file{margin-left:-5px;display:flex;place-content:center start}div.no-file mat-icon{margin-top:10px;margin-right:5px}\n"] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: S3PhotoRenderer, decorators: [{
+            type: Component,
+            args: [{ selector: 'megakill-s3-photo-renderer', template: "<div color=\"primary\" (click)=\"download()\" *ngIf=\"params.value\" class=\"download\">\n    <!-- TO DO: replace icon with SVG -->\n    <!-- <mat-icon>visibility</mat-icon> -->\n    <!-- TO DO: i18n -->\n    <span>VIZUALIZEAZ\u0102 FOTOGRAFIA</span>\n</div>", styles: ["div.download{font-size:12px;display:flex;place-content:center start;margin-left:-5px;color:var(--primary);border-radius:4px}div.download:hover{cursor:pointer}div.download:visited{color:var(--primary)}div.download mat-icon{transform:scale(.8);margin-top:10px;margin-right:5px;margin-left:-2px}div.no-file{margin-left:-5px;display:flex;place-content:center start}div.no-file mat-icon{margin-top:10px;margin-right:5px}\n"] }]
+        }], ctorParameters: function () { return [{ type: i1.S3Service }]; } });
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiczMtcGhvdG8tcmVuZGVyZXIuY29tcG9uZW50LmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vLi4vLi4vcHJvamVjdHMvbWVnYWtpbGwvY29tbW9uL3NyYy9saWIvcmVuZGVyZXJzL3MzLXBob3RvLXJlbmRlcmVyL3MzLXBob3RvLXJlbmRlcmVyLmNvbXBvbmVudC50cyIsIi4uLy4uLy4uLy4uLy4uLy4uLy4uL3Byb2plY3RzL21lZ2FraWxsL2NvbW1vbi9zcmMvbGliL3JlbmRlcmVycy9zMy1waG90by1yZW5kZXJlci9zMy1waG90by1yZW5kZXJlci5jb21wb25lbnQuaHRtbCJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxPQUFPLEVBQUUsU0FBUyxFQUFFLE1BQU0sZUFBZSxDQUFDOzs7QUFTMUMsTUFBTSxPQUFPLGVBQWU7SUFDMUIsWUFDVSxTQUFvQjtRQUFwQixjQUFTLEdBQVQsU0FBUyxDQUFXO0lBQzNCLENBQUM7SUFJSixNQUFNLENBQUMsTUFBVztRQUNoQixJQUFJLENBQUMsTUFBTSxHQUFHLE1BQU0sQ0FBQztJQUN2QixDQUFDO0lBRUQsT0FBTztRQUNMLE9BQU8sS0FBSyxDQUFDO0lBQ2YsQ0FBQztJQUVELFFBQVE7UUFDTixPQUFPLElBQUksQ0FBQyxTQUFTLENBQUMsUUFBUSxDQUFDLElBQUksQ0FBQyxNQUFNLENBQUMsS0FBSyxDQUFDLENBQUM7SUFDcEQsQ0FBQzs7NEdBakJVLGVBQWU7Z0dBQWYsZUFBZSxrRUNUNUIsb1FBS007MkZESU8sZUFBZTtrQkFMM0IsU0FBUzsrQkFDRSw0QkFBNEIiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBDb21wb25lbnQgfSBmcm9tICdAYW5ndWxhci9jb3JlJztcbmltcG9ydCB7IElDZWxsUmVuZGVyZXJBbmd1bGFyQ29tcCB9IGZyb20gJ2FnLWdyaWQtYW5ndWxhcic7XG5pbXBvcnQgeyBTM1NlcnZpY2UgfSBmcm9tICcuLi8uLi9zMy5zZXJ2aWNlJztcblxuQENvbXBvbmVudCh7XG4gIHNlbGVjdG9yOiAnbWVnYWtpbGwtczMtcGhvdG8tcmVuZGVyZXInLFxuICB0ZW1wbGF0ZVVybDogJy4vczMtcGhvdG8tcmVuZGVyZXIuY29tcG9uZW50Lmh0bWwnLFxuICBzdHlsZVVybHM6IFsnLi9zMy1waG90by1yZW5kZXJlci5jb21wb25lbnQuc2NzcyddXG59KVxuZXhwb3J0IGNsYXNzIFMzUGhvdG9SZW5kZXJlciBpbXBsZW1lbnRzIElDZWxsUmVuZGVyZXJBbmd1bGFyQ29tcCAge1xuICBjb25zdHJ1Y3RvciAoXG4gICAgcHJpdmF0ZSBzM1NlcnZpY2U6IFMzU2VydmljZVxuICApIHt9XG5cbiAgcHVibGljIHBhcmFtczogYW55O1xuXG4gIGFnSW5pdChwYXJhbXM6IGFueSk6IHZvaWQge1xuICAgIHRoaXMucGFyYW1zID0gcGFyYW1zO1xuICB9XG5cbiAgcmVmcmVzaCgpOiBib29sZWFuIHtcbiAgICByZXR1cm4gZmFsc2U7XG4gIH1cblxuICBkb3dubG9hZCgpIHtcbiAgICByZXR1cm4gdGhpcy5zM1NlcnZpY2UuZG93bmxvYWQodGhpcy5wYXJhbXMudmFsdWUpO1xuICB9XG59XG4iLCI8ZGl2IGNvbG9yPVwicHJpbWFyeVwiIChjbGljayk9XCJkb3dubG9hZCgpXCIgKm5nSWY9XCJwYXJhbXMudmFsdWVcIiBjbGFzcz1cImRvd25sb2FkXCI+XG4gICAgPCEtLSBUTyBETzogcmVwbGFjZSBpY29uIHdpdGggU1ZHIC0tPlxuICAgIDwhLS0gPG1hdC1pY29uPnZpc2liaWxpdHk8L21hdC1pY29uPiAtLT5cbiAgICA8IS0tIFRPIERPOiBpMThuIC0tPlxuICAgIDxzcGFuPlZJWlVBTElaRUFaxIIgRk9UT0dSQUZJQTwvc3Bhbj5cbjwvZGl2PiJdfQ==
