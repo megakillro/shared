@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
-import { S3Service } from '../s3.service';
+import { S3Service } from '../../s3.service';
 
 @Component({
   selector: 'appointments-solution-s3-download-renderer',

@@ -13,3 +13,11 @@ export * from './lib/auth/callback/callback.component';
 export * from './lib/injection-tokens';
 export * from './lib/auth.guard';
 export * from './lib/auth.service';
+export * from './lib/renderers/actions-renderer/actions-renderer.component';
+export * from './lib/renderers/boolean-renderer/boolean-renderer.component';
+export * from './lib/renderers/download-renderer/download-renderer.component';
+export * from './lib/renderers/local-download-renderer/local-download-renderer.component';
+export * from './lib/renderers/local-photo-renderer/local-photo-renderer.component';
+export * from './lib/renderers/s3-download-renderer/s3-download-renderer.component';
+export * from './lib/renderers/s3-photo-renderer/s3-photo-renderer.component';
+

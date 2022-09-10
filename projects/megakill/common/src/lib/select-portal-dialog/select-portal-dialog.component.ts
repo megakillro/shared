@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, Injector } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ComponentPortal, PortalInjector } from '@angular/cdk/portal';
+import { ComponentPortal, ComponentType, PortalInjector } from '@angular/cdk/portal';
 
 import { CONTAINER_DATA } from '../injection-tokens';
 import { Subscription } from 'rxjs';
@@ -12,11 +12,11 @@ import { Subscription } from 'rxjs';
 export class SelectPortalDialogComponent implements OnInit {
 
   title = '';
-  component = null;
+  component: ComponentType<any>;
   componentData = null;
   componentPortal: ComponentPortal<any>;
   eventSelectedRow: Subscription;
-  selectedRow;
+  selectedRow: any;
 
   constructor(
     private injector: Injector,

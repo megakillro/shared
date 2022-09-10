@@ -1,24 +1,24 @@
-@import 'variables';
+// TO DO: mixin
 
 div.download {
     font-size: 12px;
     display: flex;
     place-content: center start;
     margin-left: -5px;
-    color: $primary;
+    color: var(--primary);
     border-radius: 4px;
 
     &:hover {
-        color: darken($primary, 10%);
+        // color: darken(var(--primary), 10%); // TO DO: impl filter
         cursor: pointer;
     }
 
     &:active, &:focus {
-        color: darken($primary, 20%);
+                // color: darken(var(--primary), 20%); // TO DO: impl filter
     }
 
     &:visited {
-        color: $primary;
+        color: var(--primary);
     }
 
     mat-icon {

@@ -1,10 +1,16 @@
-<!-- to do: replace mat-icon with svgs -->
+<!-- TO DO: replace mat-icon with svgs -->
 
 <div color="primary" (click)="download()" *ngIf="params.value" class="download">
-    <mat-icon>get_app</mat-icon>
+    <!-- TO DO: replace mat-icon with svgs -->
+    <!-- <mat-icon>get_app</mat-icon> -->
+    <!-- TO DO: i18n -->
     <span>DESCARCĂ</span>
 </div>
+
+<!-- TO DO: i18n -->
 <div *ngIf="!params.value" class="no-file" matTooltip="Editează documentul pentru a putea încărca un fișier.">
-    <mat-icon>clear</mat-icon>
+    <!-- TO DO: replace mat-icon with svgs -->
+    <!-- <mat-icon>clear</mat-icon> -->
+    <!-- TO DO: i18n -->
     <span>Niciun fișier asociat.</span>
 </div>

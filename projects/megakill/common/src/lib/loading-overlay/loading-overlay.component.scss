@@ -25,6 +25,6 @@
     .megakill-loading-overlay-text {
         align-self: center;
         margin-top: 24px;
-        color: darken(--primary, 10%);
+        // color: darken(var(--primary), 10%); // TO DO: impl filter
     }
 }

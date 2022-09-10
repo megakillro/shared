@@ -1,35 +1,19 @@
 <button mat-icon-button (click)="edit()" matTooltip="Editează" color="primary">
-  <mat-icon>edit</mat-icon>
+  <!-- TO DO: replace mat-icon with svgs -->
+  <!-- <mat-icon>edit</mat-icon> -->
+  <!-- TO DO: i18n (temp) -->
+  Editează
 </button>
 <button mat-icon-button (click)="delete()" matTooltip="Șterge" color="accent">
-  <mat-icon>delete</mat-icon>
+  <!-- TO DO: replace mat-icon with svgs -->
+  <!-- <mat-icon>delete</mat-icon> -->
+  <!-- TO DO: i18n (temp) -->
+  Șterge
 </button>
-<button mat-icon-button (click)="monteazaSoldDebit()" matTooltip="Montează sold/debit" *ngIf="showMonteazaSoldDebit">
-  <mat-icon>attach_money</mat-icon>
+<!-- TO DO: i18n -->
+<button mat-icon-button (click)="showHistory()" matTooltip="Vezi istoricul">
+  <!-- TO DO: replace mat-icon with svgs -->
+  <!-- <mat-icon>history</mat-icon> -->
+  <!-- TO DO: i18n (temp)-->
+  Istoric
 </button>
-<!-- <button mat-icon-button (click)="downloadContract()" matTooltip="Descarcă contractul" *ngIf="hasContractShape">
-  <mat-icon>get_app</mat-icon>
-</button> -->
-<a mat-icon-button [href]="environment.baseUrl + '/misc/download-contract/' + params.data._id + '?authToken=' + authToken" _target="blank" matTooltip="Descarcă contractul" *ngIf="hasContractShape">
-  <mat-icon>get_app</mat-icon>
-</a>
-<button mat-icon-button (click)="reziliazaContract()" matTooltip="Reziliază contractul" *ngIf="hasContractShape">
-  <mat-icon>block</mat-icon>
-</button>
-<div [matTooltip]="swapTooltip" class="disabled-tooltip-helper">
-  <button mat-icon-button (click)="swapContracts()" *ngIf="hasContractShape" [disabled]="isSwapDisabled" class="swap-button">
-    <mat-icon>swap_horizontal_circle</mat-icon>
-  </button>
-</div>
-<div matTooltip="Copiază informații contract" class="disabled-tooltip-helper" *ngIf="hasContractShape">
-  <button mat-icon-button (click)="copyContractInfo()" *ngIf="hasContractShape" [disabled]="isCopyContractInfoDisabled" class="copy-contract-info-button">
-  <mat-icon>info</mat-icon>
-</button>
-</div>
-<button mat-icon-button (click)="veziIstoric()" matTooltip="Vezi istoricul">
-  <mat-icon>history</mat-icon>
-</button>
-<a [href]="googleQuery" target="_blank" mat-icon-button [matTooltip]="googleQueryTooltip" *ngIf="hasStradaShape">
-  <mat-icon>search</mat-icon>
-</a>
-<input type="text" class="actions-clipboard-input" [id]="'actions-clipboard-input-' + params.data._id">

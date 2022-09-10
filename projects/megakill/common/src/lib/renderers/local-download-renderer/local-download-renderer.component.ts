@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
-import { LocalFilesService } from '../local-files.service';
+import { LocalFilesService } from '../../local-files.service';
 
 @Component({
   selector: 'appointments-solution-local-download-renderer',
