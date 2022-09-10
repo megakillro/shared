@@ -2,6 +2,7 @@
  * Public API Surface of common
  */
 
+export * from './lib/dialog.service';
 export * from './lib/formatter.service';
 export * from './lib/local-files.service';
 export * from './lib/csv.service';

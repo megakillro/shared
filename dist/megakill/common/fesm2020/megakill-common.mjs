@@ -1,16 +1,160 @@
 import * as i0 from '@angular/core';
-import { Injectable, Optional, InjectionToken, Component, Inject, NgModule } from '@angular/core';
-import * as moment from 'moment-timezone';
-import { saveAs } from 'file-saver';
-import * as i1 from '@angular/common/http';
-import * as i1$1 from '@angular/material/dialog';
+import { InjectionToken, Component, Inject, Injectable, Optional, NgModule } from '@angular/core';
+import * as i1 from '@angular/material/dialog';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { ComponentPortal, PortalInjector } from '@angular/cdk/portal';
+import * as moment from 'moment-timezone';
+import { saveAs } from 'file-saver';
+import * as i1$1 from '@angular/common/http';
 import { MatIconModule } from '@angular/material/icon';
 import createAuth0Client from '@auth0/auth0-spa-js';
 import { from, throwError, BehaviorSubject, of, combineLatest } from 'rxjs';
 import { shareReplay, catchError, concatMap, tap } from 'rxjs/operators';
 import * as i1$2 from '@angular/router';
+
+const CONTAINER_DATA = new InjectionToken('CONTAINER_DATA', { providedIn: 'root', factory: () => ({}) });
+
+class SelectPortalDialogComponent {
+    constructor(injector, dialogRef, data) {
+        this.injector = injector;
+        this.dialogRef = dialogRef;
+        this.data = data;
+        this.title = '';
+        this.componentData = null;
+        if (data && data.title) {
+            this.title = data.title;
+        }
+        if (!data || !data.component) {
+            throw new Error('SelectDialog: data.component is undefined');
+        }
+        this.component = data.component;
+        if (!data.componentData) {
+            throw new Error('SelectDialog: data.component.componentData is undefined');
+        }
+        this.componentData = data.componentData;
+        this.componentPortal = new ComponentPortal(this.component, null, this.createInjector(this.componentData));
+    }
+    createInjector(dataToPass) {
+        const injectorTokens = new WeakMap();
+        injectorTokens.set(CONTAINER_DATA, dataToPass);
+        return new PortalInjector(this.injector, injectorTokens);
+    }
+    ngOnInit() { }
+    onPortalAttached(event) {
+        console.log(event.instance.selectedRow);
+        console.log(event);
+        this.eventSelectedRow = event.instance.selectedRow.subscribe((row) => {
+            console.log(row);
+            this.selectedRow = row;
+            console.log("SelectPortalDialogComponent -> onPortalAttached -> this.selectedRow", this.selectedRow);
+        });
+    }
+    getSelectedRowAfterClose() {
+        this.dialogRef.close(this.selectedRow);
+        console.log("SelectPortalDialogComponent -> getSelectedRowAfterClose -> this.dialogRef.close(this.selectedRow);", this.selectedRow);
+    }
+}
+SelectPortalDialogComponent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: SelectPortalDialogComponent, deps: [{ token: i0.Injector }, { token: i1.MatDialogRef }, { token: MAT_DIALOG_DATA }], target: i0.ɵɵFactoryTarget.Component });
+SelectPortalDialogComponent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "14.0.6", type: SelectPortalDialogComponent, selector: "megakill-select-portal-dialog", ngImport: i0, template: "<h1 mat-dialog-title>{{title}}</h1>\n<div mat-dialog-content style=\"height: 100%\">\n        <ng-template [cdkPortalOutlet]=\"componentPortal\" (attached)=\"onPortalAttached($event)\"></ng-template>\n</div>\n<div mat-dialog-actions align=\"end\">\n        <button mat-button [mat-dialog-close]=\"true\" cdkFocusInitial>ANULEAZ\u0102</button>\n        <button mat-raised-button [mat-dialog-close]=\"true\" cdkFocusInitial color=\"primary\" (click)=\"getSelectedRowAfterClose()\">SELECTEAZ\u0102</button>\n</div>\n", dependencies: [{ kind: "directive", type: i1.MatDialogClose, selector: "[mat-dialog-close], [matDialogClose]", inputs: ["aria-label", "type", "mat-dialog-close", "matDialogClose"], exportAs: ["matDialogClose"] }, { kind: "directive", type: i1.MatDialogTitle, selector: "[mat-dialog-title], [matDialogTitle]", inputs: ["id"], exportAs: ["matDialogTitle"] }, { kind: "directive", type: i1.MatDialogContent, selector: "[mat-dialog-content], mat-dialog-content, [matDialogContent]" }, { kind: "directive", type: i1.MatDialogActions, selector: "[mat-dialog-actions], mat-dialog-actions, [matDialogActions]", inputs: ["align"] }] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: SelectPortalDialogComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'megakill-select-portal-dialog', template: "<h1 mat-dialog-title>{{title}}</h1>\n<div mat-dialog-content style=\"height: 100%\">\n        <ng-template [cdkPortalOutlet]=\"componentPortal\" (attached)=\"onPortalAttached($event)\"></ng-template>\n</div>\n<div mat-dialog-actions align=\"end\">\n        <button mat-button [mat-dialog-close]=\"true\" cdkFocusInitial>ANULEAZ\u0102</button>\n        <button mat-raised-button [mat-dialog-close]=\"true\" cdkFocusInitial color=\"primary\" (click)=\"getSelectedRowAfterClose()\">SELECTEAZ\u0102</button>\n</div>\n" }]
+        }], ctorParameters: function () { return [{ type: i0.Injector }, { type: i1.MatDialogRef }, { type: undefined, decorators: [{
+                    type: Inject,
+                    args: [MAT_DIALOG_DATA]
+                }] }]; } });
+
+class OkDialogComponent {
+    constructor(dialogRef, data) {
+        this.dialogRef = dialogRef;
+        this.data = data;
+        this.title = '';
+        this.message = '';
+        if (data && data.title) {
+            this.title = data.title;
+        }
+        if (data && data.message) {
+            this.message = data.message;
+        }
+    }
+    ngOnInit() { }
+}
+OkDialogComponent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: OkDialogComponent, deps: [{ token: i1.MatDialogRef }, { token: MAT_DIALOG_DATA }], target: i0.ɵɵFactoryTarget.Component });
+OkDialogComponent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "14.0.6", type: OkDialogComponent, selector: "megakill-ok-dialog", ngImport: i0, template: "<h1 mat-dialog-title>{{title}}</h1>\n<div mat-dialog-content>\n        <p>{{message}}</p>\n</div>\n<div mat-dialog-actions align=\"end\">\n        <button mat-button mat-dialog-close=\"true\" cdkFocusInitial color=\"primary\">OK</button>\n</div>" });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: OkDialogComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'megakill-ok-dialog', template: "<h1 mat-dialog-title>{{title}}</h1>\n<div mat-dialog-content>\n        <p>{{message}}</p>\n</div>\n<div mat-dialog-actions align=\"end\">\n        <button mat-button mat-dialog-close=\"true\" cdkFocusInitial color=\"primary\">OK</button>\n</div>" }]
+        }], ctorParameters: function () { return [{ type: i1.MatDialogRef }, { type: undefined, decorators: [{
+                    type: Inject,
+                    args: [MAT_DIALOG_DATA]
+                }] }]; } });
+
+class OkPortalDialogComponent {
+    constructor(injector, dialogRef, data) {
+        this.injector = injector;
+        this.dialogRef = dialogRef;
+        this.data = data;
+        this.title = '';
+        this.componentData = null;
+        if (data && data.title) {
+            this.title = data.title;
+        }
+        if (!data || !data.component) {
+            throw new Error('OkDialog: data.component is undefined');
+        }
+        this.component = data.component;
+        if (!data.componentData) {
+            throw new Error('OkDialog: data.component.componentData is undefined');
+        }
+        this.componentData = data.componentData;
+        this.componentPortal = new ComponentPortal(this.component, null, this.createInjector(this.componentData));
+    }
+    createInjector(dataToPass) {
+        const injectorTokens = new WeakMap();
+        injectorTokens.set(CONTAINER_DATA, dataToPass);
+        return new PortalInjector(this.injector, injectorTokens);
+    }
+    ngOnInit() { }
+    onPortalAttached(event) {
+        console.log(event.instance.selectedRow);
+        console.log(event);
+        this.eventSelectedRow = event.instance.selectedRow.subscribe((el) => {
+            console.log(el);
+        });
+    }
+}
+OkPortalDialogComponent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: OkPortalDialogComponent, deps: [{ token: i0.Injector }, { token: i1.MatDialogRef }, { token: MAT_DIALOG_DATA }], target: i0.ɵɵFactoryTarget.Component });
+OkPortalDialogComponent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "14.0.6", type: OkPortalDialogComponent, selector: "megakill-ok-portal-dialog", ngImport: i0, template: "<h1 mat-dialog-title>{{title}}</h1>\n<div mat-dialog-content style=\"height: 100%\">\n        <ng-template [cdkPortalOutlet]=\"componentPortal\" (attached)=\"onPortalAttached($event)\"></ng-template>\n</div>\n<div mat-dialog-actions align=\"end\">\n        <button mat-button [mat-dialog-close]=\"true\" cdkFocusInitial color=\"primary\">OK</button>\n</div>", dependencies: [{ kind: "directive", type: i1.MatDialogClose, selector: "[mat-dialog-close], [matDialogClose]", inputs: ["aria-label", "type", "mat-dialog-close", "matDialogClose"], exportAs: ["matDialogClose"] }, { kind: "directive", type: i1.MatDialogTitle, selector: "[mat-dialog-title], [matDialogTitle]", inputs: ["id"], exportAs: ["matDialogTitle"] }, { kind: "directive", type: i1.MatDialogContent, selector: "[mat-dialog-content], mat-dialog-content, [matDialogContent]" }, { kind: "directive", type: i1.MatDialogActions, selector: "[mat-dialog-actions], mat-dialog-actions, [matDialogActions]", inputs: ["align"] }] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: OkPortalDialogComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'megakill-ok-portal-dialog', template: "<h1 mat-dialog-title>{{title}}</h1>\n<div mat-dialog-content style=\"height: 100%\">\n        <ng-template [cdkPortalOutlet]=\"componentPortal\" (attached)=\"onPortalAttached($event)\"></ng-template>\n</div>\n<div mat-dialog-actions align=\"end\">\n        <button mat-button [mat-dialog-close]=\"true\" cdkFocusInitial color=\"primary\">OK</button>\n</div>" }]
+        }], ctorParameters: function () { return [{ type: i0.Injector }, { type: i1.MatDialogRef }, { type: undefined, decorators: [{
+                    type: Inject,
+                    args: [MAT_DIALOG_DATA]
+                }] }]; } });
+
+class DialogService {
+    constructor(dialog) {
+        this.dialog = dialog;
+    }
+    openOkDialog(data) {
+        return this.dialog.open(OkDialogComponent, { data });
+    }
+    openOkPortalDialog(data) {
+        return this.dialog.open(OkPortalDialogComponent, { data, width: '90vw', maxWidth: '90vw', height: '80vh' });
+    }
+    openSelectPortalDialog(data) {
+        return this.dialog.open(SelectPortalDialogComponent, { data, width: '90vw', maxWidth: '90vw', height: '80vh' });
+    }
+}
+DialogService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: DialogService, deps: [{ token: i1.MatDialog }], target: i0.ɵɵFactoryTarget.Injectable });
+DialogService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: DialogService, providedIn: 'root' });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: DialogService, decorators: [{
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
+        }], ctorParameters: function () { return [{ type: i1.MatDialog }]; } });
 
 class FormatterService {
     constructor() { }
@@ -83,14 +227,14 @@ class LocalFilesService {
         });
     }
 }
-LocalFilesService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: LocalFilesService, deps: [{ token: i1.HttpClient }, { token: MegakillCommonModuleConfig, optional: true }], target: i0.ɵɵFactoryTarget.Injectable });
+LocalFilesService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: LocalFilesService, deps: [{ token: i1$1.HttpClient }, { token: MegakillCommonModuleConfig, optional: true }], target: i0.ɵɵFactoryTarget.Injectable });
 LocalFilesService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: LocalFilesService, providedIn: 'root' });
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: LocalFilesService, decorators: [{
             type: Injectable,
             args: [{
                     providedIn: 'root'
                 }]
-        }], ctorParameters: function () { return [{ type: i1.HttpClient }, { type: MegakillCommonModuleConfig, decorators: [{
+        }], ctorParameters: function () { return [{ type: i1$1.HttpClient }, { type: MegakillCommonModuleConfig, decorators: [{
                     type: Optional
                 }] }]; } });
 
@@ -112,14 +256,14 @@ class CsvService {
         return this.http.post(this.baseUrl + 'csv-to-json', { csv }, { responseType: 'arraybuffer' }).toPromise();
     }
 }
-CsvService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: CsvService, deps: [{ token: i1.HttpClient }, { token: MegakillCommonModuleConfig, optional: true }], target: i0.ɵɵFactoryTarget.Injectable });
+CsvService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: CsvService, deps: [{ token: i1$1.HttpClient }, { token: MegakillCommonModuleConfig, optional: true }], target: i0.ɵɵFactoryTarget.Injectable });
 CsvService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: CsvService, providedIn: 'root' });
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: CsvService, decorators: [{
             type: Injectable,
             args: [{
                     providedIn: 'root'
                 }]
-        }], ctorParameters: function () { return [{ type: i1.HttpClient }, { type: MegakillCommonModuleConfig, decorators: [{
+        }], ctorParameters: function () { return [{ type: i1$1.HttpClient }, { type: MegakillCommonModuleConfig, decorators: [{
                     type: Optional
                 }] }]; } });
 
@@ -142,111 +286,15 @@ class S3Service {
         return this.http.post(this.baseUrl + 'upload', formData).toPromise();
     }
 }
-S3Service.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: S3Service, deps: [{ token: i1.HttpClient }, { token: MegakillCommonModuleConfig, optional: true }], target: i0.ɵɵFactoryTarget.Injectable });
+S3Service.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: S3Service, deps: [{ token: i1$1.HttpClient }, { token: MegakillCommonModuleConfig, optional: true }], target: i0.ɵɵFactoryTarget.Injectable });
 S3Service.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: S3Service, providedIn: 'root' });
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: S3Service, decorators: [{
             type: Injectable,
             args: [{
                     providedIn: 'root'
                 }]
-        }], ctorParameters: function () { return [{ type: i1.HttpClient }, { type: MegakillCommonModuleConfig, decorators: [{
+        }], ctorParameters: function () { return [{ type: i1$1.HttpClient }, { type: MegakillCommonModuleConfig, decorators: [{
                     type: Optional
-                }] }]; } });
-
-const CONTAINER_DATA = new InjectionToken('CONTAINER_DATA', { providedIn: 'root', factory: () => ({}) });
-
-class OkPortalDialogComponent {
-    constructor(injector, dialogRef, data) {
-        this.injector = injector;
-        this.dialogRef = dialogRef;
-        this.data = data;
-        this.title = '';
-        this.componentData = null;
-        if (data && data.title) {
-            this.title = data.title;
-        }
-        if (!data || !data.component) {
-            throw new Error('OkDialog: data.component is undefined');
-        }
-        this.component = data.component;
-        if (!data.componentData) {
-            throw new Error('OkDialog: data.component.componentData is undefined');
-        }
-        this.componentData = data.componentData;
-        this.componentPortal = new ComponentPortal(this.component, null, this.createInjector(this.componentData));
-    }
-    createInjector(dataToPass) {
-        const injectorTokens = new WeakMap();
-        injectorTokens.set(CONTAINER_DATA, dataToPass);
-        return new PortalInjector(this.injector, injectorTokens);
-    }
-    ngOnInit() { }
-    onPortalAttached(event) {
-        console.log(event.instance.selectedRow);
-        console.log(event);
-        this.eventSelectedRow = event.instance.selectedRow.subscribe((el) => {
-            console.log(el);
-        });
-    }
-}
-OkPortalDialogComponent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: OkPortalDialogComponent, deps: [{ token: i0.Injector }, { token: i1$1.MatDialogRef }, { token: MAT_DIALOG_DATA }], target: i0.ɵɵFactoryTarget.Component });
-OkPortalDialogComponent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "14.0.6", type: OkPortalDialogComponent, selector: "megakill-ok-portal-dialog", ngImport: i0, template: "<h1 mat-dialog-title>{{title}}</h1>\n<div mat-dialog-content style=\"height: 100%\">\n        <ng-template [cdkPortalOutlet]=\"componentPortal\" (attached)=\"onPortalAttached($event)\"></ng-template>\n</div>\n<div mat-dialog-actions align=\"end\">\n        <button mat-button [mat-dialog-close]=\"true\" cdkFocusInitial color=\"primary\">OK</button>\n</div>", dependencies: [{ kind: "directive", type: i1$1.MatDialogClose, selector: "[mat-dialog-close], [matDialogClose]", inputs: ["aria-label", "type", "mat-dialog-close", "matDialogClose"], exportAs: ["matDialogClose"] }, { kind: "directive", type: i1$1.MatDialogTitle, selector: "[mat-dialog-title], [matDialogTitle]", inputs: ["id"], exportAs: ["matDialogTitle"] }, { kind: "directive", type: i1$1.MatDialogContent, selector: "[mat-dialog-content], mat-dialog-content, [matDialogContent]" }, { kind: "directive", type: i1$1.MatDialogActions, selector: "[mat-dialog-actions], mat-dialog-actions, [matDialogActions]", inputs: ["align"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: OkPortalDialogComponent, decorators: [{
-            type: Component,
-            args: [{ selector: 'megakill-ok-portal-dialog', template: "<h1 mat-dialog-title>{{title}}</h1>\n<div mat-dialog-content style=\"height: 100%\">\n        <ng-template [cdkPortalOutlet]=\"componentPortal\" (attached)=\"onPortalAttached($event)\"></ng-template>\n</div>\n<div mat-dialog-actions align=\"end\">\n        <button mat-button [mat-dialog-close]=\"true\" cdkFocusInitial color=\"primary\">OK</button>\n</div>" }]
-        }], ctorParameters: function () { return [{ type: i0.Injector }, { type: i1$1.MatDialogRef }, { type: undefined, decorators: [{
-                    type: Inject,
-                    args: [MAT_DIALOG_DATA]
-                }] }]; } });
-
-class SelectPortalDialogComponent {
-    constructor(injector, dialogRef, data) {
-        this.injector = injector;
-        this.dialogRef = dialogRef;
-        this.data = data;
-        this.title = '';
-        this.componentData = null;
-        if (data && data.title) {
-            this.title = data.title;
-        }
-        if (!data || !data.component) {
-            throw new Error('SelectDialog: data.component is undefined');
-        }
-        this.component = data.component;
-        if (!data.componentData) {
-            throw new Error('SelectDialog: data.component.componentData is undefined');
-        }
-        this.componentData = data.componentData;
-        this.componentPortal = new ComponentPortal(this.component, null, this.createInjector(this.componentData));
-    }
-    createInjector(dataToPass) {
-        const injectorTokens = new WeakMap();
-        injectorTokens.set(CONTAINER_DATA, dataToPass);
-        return new PortalInjector(this.injector, injectorTokens);
-    }
-    ngOnInit() { }
-    onPortalAttached(event) {
-        console.log(event.instance.selectedRow);
-        console.log(event);
-        this.eventSelectedRow = event.instance.selectedRow.subscribe((row) => {
-            console.log(row);
-            this.selectedRow = row;
-            console.log("SelectPortalDialogComponent -> onPortalAttached -> this.selectedRow", this.selectedRow);
-        });
-    }
-    getSelectedRowAfterClose() {
-        this.dialogRef.close(this.selectedRow);
-        console.log("SelectPortalDialogComponent -> getSelectedRowAfterClose -> this.dialogRef.close(this.selectedRow);", this.selectedRow);
-    }
-}
-SelectPortalDialogComponent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: SelectPortalDialogComponent, deps: [{ token: i0.Injector }, { token: i1$1.MatDialogRef }, { token: MAT_DIALOG_DATA }], target: i0.ɵɵFactoryTarget.Component });
-SelectPortalDialogComponent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "14.0.6", type: SelectPortalDialogComponent, selector: "megakill-select-portal-dialog", ngImport: i0, template: "<h1 mat-dialog-title>{{title}}</h1>\n<div mat-dialog-content style=\"height: 100%\">\n        <ng-template [cdkPortalOutlet]=\"componentPortal\" (attached)=\"onPortalAttached($event)\"></ng-template>\n</div>\n<div mat-dialog-actions align=\"end\">\n        <button mat-button [mat-dialog-close]=\"true\" cdkFocusInitial>ANULEAZ\u0102</button>\n        <button mat-raised-button [mat-dialog-close]=\"true\" cdkFocusInitial color=\"primary\" (click)=\"getSelectedRowAfterClose()\">SELECTEAZ\u0102</button>\n</div>\n", dependencies: [{ kind: "directive", type: i1$1.MatDialogClose, selector: "[mat-dialog-close], [matDialogClose]", inputs: ["aria-label", "type", "mat-dialog-close", "matDialogClose"], exportAs: ["matDialogClose"] }, { kind: "directive", type: i1$1.MatDialogTitle, selector: "[mat-dialog-title], [matDialogTitle]", inputs: ["id"], exportAs: ["matDialogTitle"] }, { kind: "directive", type: i1$1.MatDialogContent, selector: "[mat-dialog-content], mat-dialog-content, [matDialogContent]" }, { kind: "directive", type: i1$1.MatDialogActions, selector: "[mat-dialog-actions], mat-dialog-actions, [matDialogActions]", inputs: ["align"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: SelectPortalDialogComponent, decorators: [{
-            type: Component,
-            args: [{ selector: 'megakill-select-portal-dialog', template: "<h1 mat-dialog-title>{{title}}</h1>\n<div mat-dialog-content style=\"height: 100%\">\n        <ng-template [cdkPortalOutlet]=\"componentPortal\" (attached)=\"onPortalAttached($event)\"></ng-template>\n</div>\n<div mat-dialog-actions align=\"end\">\n        <button mat-button [mat-dialog-close]=\"true\" cdkFocusInitial>ANULEAZ\u0102</button>\n        <button mat-raised-button [mat-dialog-close]=\"true\" cdkFocusInitial color=\"primary\" (click)=\"getSelectedRowAfterClose()\">SELECTEAZ\u0102</button>\n</div>\n" }]
-        }], ctorParameters: function () { return [{ type: i0.Injector }, { type: i1$1.MatDialogRef }, { type: undefined, decorators: [{
-                    type: Inject,
-                    args: [MAT_DIALOG_DATA]
                 }] }]; } });
 
 class MegakillCommonModule {
@@ -616,54 +664,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.6", ngImpor
                 }]
         }], ctorParameters: function () { return [{ type: AuthService }]; } });
 
-class OkDialogComponent {
-    constructor(dialogRef, data) {
-        this.dialogRef = dialogRef;
-        this.data = data;
-        this.title = '';
-        this.message = '';
-        if (data && data.title) {
-            this.title = data.title;
-        }
-        if (data && data.message) {
-            this.message = data.message;
-        }
-    }
-    ngOnInit() { }
-}
-OkDialogComponent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: OkDialogComponent, deps: [{ token: i1$1.MatDialogRef }, { token: MAT_DIALOG_DATA }], target: i0.ɵɵFactoryTarget.Component });
-OkDialogComponent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "14.0.6", type: OkDialogComponent, selector: "megakill-ok-dialog", ngImport: i0, template: "<h1 mat-dialog-title>{{title}}</h1>\n<div mat-dialog-content>\n        <p>{{message}}</p>\n</div>\n<div mat-dialog-actions align=\"end\">\n        <button mat-button mat-dialog-close=\"true\" cdkFocusInitial color=\"primary\">OK</button>\n</div>" });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: OkDialogComponent, decorators: [{
-            type: Component,
-            args: [{ selector: 'megakill-ok-dialog', template: "<h1 mat-dialog-title>{{title}}</h1>\n<div mat-dialog-content>\n        <p>{{message}}</p>\n</div>\n<div mat-dialog-actions align=\"end\">\n        <button mat-button mat-dialog-close=\"true\" cdkFocusInitial color=\"primary\">OK</button>\n</div>" }]
-        }], ctorParameters: function () { return [{ type: i1$1.MatDialogRef }, { type: undefined, decorators: [{
-                    type: Inject,
-                    args: [MAT_DIALOG_DATA]
-                }] }]; } });
-
-class DialogService {
-    constructor(dialog) {
-        this.dialog = dialog;
-    }
-    openOkDialog(data) {
-        return this.dialog.open(OkDialogComponent, { data });
-    }
-    openOkPortalDialog(data) {
-        return this.dialog.open(OkPortalDialogComponent, { data, width: '90vw', maxWidth: '90vw', height: '80vh' });
-    }
-    openSelectPortalDialog(data) {
-        return this.dialog.open(SelectPortalDialogComponent, { data, width: '90vw', maxWidth: '90vw', height: '80vh' });
-    }
-}
-DialogService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: DialogService, deps: [{ token: i1$1.MatDialog }], target: i0.ɵɵFactoryTarget.Injectable });
-DialogService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: DialogService, providedIn: 'root' });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: DialogService, decorators: [{
-            type: Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }], ctorParameters: function () { return [{ type: i1$1.MatDialog }]; } });
-
 class ActionsRenderer {
     constructor(dialogService) {
         this.dialogService = dialogService;
@@ -829,5 +829,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.6", ngImpor
  * Generated bundle index. Do not edit.
  */
 
-export { AG_GRID_LOCALE_TEXT_RO, ActionsRenderer, AuthGuard, AuthService, BooleanRenderer, CONTAINER_DATA, CallbackComponent, CsvService, DownloadRenderer, FormatterService, LocalDownloadRenderer, LocalFilesService, LocalPhotoRenderer, MegakillCommonModule, RO_DATE_FORMATS, S3DownloadRenderer, S3PhotoRenderer, S3Service };
+export { AG_GRID_LOCALE_TEXT_RO, ActionsRenderer, AuthGuard, AuthService, BooleanRenderer, CONTAINER_DATA, CallbackComponent, CsvService, DialogService, DownloadRenderer, FormatterService, LocalDownloadRenderer, LocalFilesService, LocalPhotoRenderer, MegakillCommonModule, RO_DATE_FORMATS, S3DownloadRenderer, S3PhotoRenderer, S3Service };
 //# sourceMappingURL=megakill-common.mjs.map
