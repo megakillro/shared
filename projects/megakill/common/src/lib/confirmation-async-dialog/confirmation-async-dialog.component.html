@@ -1,0 +1,14 @@
+<!-- TO DO: fix ngStyle -->
+<!-- [ngStyle]="{'visibility': loading ? 'visible':'hidden'}" -->
+
+<mat-progress-bar
+  mode="indeterminate"
+  ></mat-progress-bar>
+<h1 mat-dialog-title>Confirmare necesară</h1>
+<div mat-dialog-content>
+  <p [innerHTML]="message"></p>
+</div>
+<div mat-dialog-actions align="end">
+        <button mat-button (click)="reject()" cdkFocusInitial [disabled]="loading">NU</button>
+        <button mat-button (click)="confirm()" color="primary" [disabled]="loading">{{ loading ? 'SE ÎNCARCĂ...' : 'DA' }}</button>
+</div>

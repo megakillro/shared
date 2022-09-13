@@ -17,3 +17,6 @@ export * from './lib/renderers/local-download-renderer/local-download-renderer.c
 export * from './lib/renderers/local-photo-renderer/local-photo-renderer.component';
 export * from './lib/renderers/s3-download-renderer/s3-download-renderer.component';
 export * from './lib/renderers/s3-photo-renderer/s3-photo-renderer.component';
+export * from './lib/confirmation-async-dialog/confirmation-async-dialog.component';
+export * from './lib/confirmation-dialog/confirmation-dialog.module';
+export * from './lib/confirmation-dialog/confirmation-dialog/confirmation-dialog.component';

@@ -6,11 +6,17 @@ import { ComponentPortal, PortalInjector } from '@angular/cdk/portal';
 import * as moment from 'moment-timezone';
 import { saveAs } from 'file-saver';
 import * as i1$1 from '@angular/common/http';
+import * as i1$2 from '@angular/material/snack-bar';
+import * as i3 from '@angular/material/progress-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { CommonModule } from '@angular/common';
+import * as i2 from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import createAuth0Client from '@auth0/auth0-spa-js';
 import { from, throwError, BehaviorSubject, of, combineLatest } from 'rxjs';
 import { shareReplay, catchError, concatMap, tap } from 'rxjs/operators';
-import * as i1$2 from '@angular/router';
+import * as i1$3 from '@angular/router';
 
 const CONTAINER_DATA = new InjectionToken('CONTAINER_DATA', { providedIn: 'root', factory: () => ({}) });
 
@@ -297,6 +303,117 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.6", ngImpor
                     type: Optional
                 }] }]; } });
 
+class ConfirmationAsyncDialogComponent {
+    constructor(snackBar, dialogRef, data) {
+        this.snackBar = snackBar;
+        this.dialogRef = dialogRef;
+        this.data = data;
+        this.fn = () => { };
+        this.loading = false;
+        // TO DO: i18n
+        this.message = 'Sunteți sigur că doriți să efectuați această acțiune?';
+        // TO DO: i18n
+        this.errorMessage = 'Eroare: operațiunea nu a putut fi efectuată!';
+        // TO DO: i18n
+        this.successMessage = 'Operațiunea a fost efectuată cu succes!';
+        if (data && data.message) {
+            this.message = data.message;
+        }
+        if (data && data.errorMessage) {
+            this.errorMessage = data.errorMessage;
+        }
+        if (data && data.successMessage) {
+            this.successMessage = data.successMessage;
+        }
+        if (data && data.fn) {
+            this.fn = data.fn;
+        }
+        else {
+            console.error(`No fn provided for ConfirmationAsyncDialogComponent with message "${this.message}"`);
+        }
+    }
+    confirm() {
+        this.loading = true;
+        this.fn().then((result) => {
+            this.loading = false;
+            this.dialogRef.close(result);
+            this.snackBar.open(this.successMessage, 'OK', {
+                duration: 3000
+            });
+        }).catch((err) => {
+            this.loading = false;
+            this.dialogRef.close({ error: err });
+            this.snackBar.open(this.errorMessage, 'OK', {
+                duration: 3000
+            });
+        });
+    }
+    reject() {
+        this.dialogRef.close();
+    }
+    ngOnInit() { }
+}
+ConfirmationAsyncDialogComponent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: ConfirmationAsyncDialogComponent, deps: [{ token: i1$2.MatSnackBar }, { token: i1.MatDialogRef }, { token: MAT_DIALOG_DATA }], target: i0.ɵɵFactoryTarget.Component });
+ConfirmationAsyncDialogComponent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "14.0.6", type: ConfirmationAsyncDialogComponent, selector: "megakill-confirmation-async-dialog", ngImport: i0, template: "<!-- TO DO: fix ngStyle -->\n<!-- [ngStyle]=\"{'visibility': loading ? 'visible':'hidden'}\" -->\n\n<mat-progress-bar\n  mode=\"indeterminate\"\n  ></mat-progress-bar>\n<h1 mat-dialog-title>Confirmare necesar\u0103</h1>\n<div mat-dialog-content>\n  <p [innerHTML]=\"message\"></p>\n</div>\n<div mat-dialog-actions align=\"end\">\n        <button mat-button (click)=\"reject()\" cdkFocusInitial [disabled]=\"loading\">NU</button>\n        <button mat-button (click)=\"confirm()\" color=\"primary\" [disabled]=\"loading\">{{ loading ? 'SE \u00CENCARC\u0102...' : 'DA' }}</button>\n</div>", styles: ["mat-progress-bar{transition:.125s ease-in-out all;top:-25px;left:-25px;width:calc(100% + 50px)}\n"], dependencies: [{ kind: "directive", type: i1.MatDialogTitle, selector: "[mat-dialog-title], [matDialogTitle]", inputs: ["id"], exportAs: ["matDialogTitle"] }, { kind: "directive", type: i1.MatDialogContent, selector: "[mat-dialog-content], mat-dialog-content, [matDialogContent]" }, { kind: "directive", type: i1.MatDialogActions, selector: "[mat-dialog-actions], mat-dialog-actions, [matDialogActions]", inputs: ["align"] }, { kind: "component", type: i3.MatProgressBar, selector: "mat-progress-bar", inputs: ["color", "value", "bufferValue", "mode"], outputs: ["animationEnd"], exportAs: ["matProgressBar"] }] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: ConfirmationAsyncDialogComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'megakill-confirmation-async-dialog', template: "<!-- TO DO: fix ngStyle -->\n<!-- [ngStyle]=\"{'visibility': loading ? 'visible':'hidden'}\" -->\n\n<mat-progress-bar\n  mode=\"indeterminate\"\n  ></mat-progress-bar>\n<h1 mat-dialog-title>Confirmare necesar\u0103</h1>\n<div mat-dialog-content>\n  <p [innerHTML]=\"message\"></p>\n</div>\n<div mat-dialog-actions align=\"end\">\n        <button mat-button (click)=\"reject()\" cdkFocusInitial [disabled]=\"loading\">NU</button>\n        <button mat-button (click)=\"confirm()\" color=\"primary\" [disabled]=\"loading\">{{ loading ? 'SE \u00CENCARC\u0102...' : 'DA' }}</button>\n</div>", styles: ["mat-progress-bar{transition:.125s ease-in-out all;top:-25px;left:-25px;width:calc(100% + 50px)}\n"] }]
+        }], ctorParameters: function () { return [{ type: i1$2.MatSnackBar }, { type: i1.MatDialogRef }, { type: undefined, decorators: [{
+                    type: Inject,
+                    args: [MAT_DIALOG_DATA]
+                }] }]; } });
+
+class ConfirmationDialogComponent {
+    constructor(dialogRef, data) {
+        this.dialogRef = dialogRef;
+        this.data = data;
+        // TO DO: i18n
+        this.message = 'Sunteți sigur că doriți să efectuați această acțiune?';
+        if (data && data.message) {
+            this.message = data.message;
+        }
+    }
+    ngOnInit() { }
+}
+ConfirmationDialogComponent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: ConfirmationDialogComponent, deps: [{ token: i1.MatDialogRef }, { token: MAT_DIALOG_DATA }], target: i0.ɵɵFactoryTarget.Component });
+ConfirmationDialogComponent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "14.0.6", type: ConfirmationDialogComponent, selector: "megakill-confirmation-dialog", ngImport: i0, template: "<h1 mat-dialog-title>Confirmare necesar\u0103</h1>\n<div mat-dialog-content>\n  <p [innerHTML]=\"message\"></p>\n</div>\n<div mat-dialog-actions align=\"end\">\n        <button mat-button [mat-dialog-close]=\"false\" cdkFocusInitial>NU</button>\n        <button mat-button [mat-dialog-close]=\"true\" cdkFocusInitial color=\"primary\">DA</button>\n</div>", styles: [""], dependencies: [{ kind: "component", type: i2.MatButton, selector: "button[mat-button], button[mat-raised-button], button[mat-icon-button],             button[mat-fab], button[mat-mini-fab], button[mat-stroked-button],             button[mat-flat-button]", inputs: ["disabled", "disableRipple", "color"], exportAs: ["matButton"] }, { kind: "directive", type: i1.MatDialogClose, selector: "[mat-dialog-close], [matDialogClose]", inputs: ["aria-label", "type", "mat-dialog-close", "matDialogClose"], exportAs: ["matDialogClose"] }, { kind: "directive", type: i1.MatDialogTitle, selector: "[mat-dialog-title], [matDialogTitle]", inputs: ["id"], exportAs: ["matDialogTitle"] }, { kind: "directive", type: i1.MatDialogContent, selector: "[mat-dialog-content], mat-dialog-content, [matDialogContent]" }, { kind: "directive", type: i1.MatDialogActions, selector: "[mat-dialog-actions], mat-dialog-actions, [matDialogActions]", inputs: ["align"] }] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: ConfirmationDialogComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'megakill-confirmation-dialog', template: "<h1 mat-dialog-title>Confirmare necesar\u0103</h1>\n<div mat-dialog-content>\n  <p [innerHTML]=\"message\"></p>\n</div>\n<div mat-dialog-actions align=\"end\">\n        <button mat-button [mat-dialog-close]=\"false\" cdkFocusInitial>NU</button>\n        <button mat-button [mat-dialog-close]=\"true\" cdkFocusInitial color=\"primary\">DA</button>\n</div>" }]
+        }], ctorParameters: function () { return [{ type: i1.MatDialogRef }, { type: undefined, decorators: [{
+                    type: Inject,
+                    args: [MAT_DIALOG_DATA]
+                }] }]; } });
+
+class ConfirmationDialogModule {
+}
+ConfirmationDialogModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: ConfirmationDialogModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ConfirmationDialogModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "14.0.6", ngImport: i0, type: ConfirmationDialogModule, declarations: [ConfirmationDialogComponent], imports: [CommonModule,
+        MatButtonModule,
+        MatDialogModule], exports: [ConfirmationDialogComponent] });
+ConfirmationDialogModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: ConfirmationDialogModule, imports: [CommonModule,
+        MatButtonModule,
+        MatDialogModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: ConfirmationDialogModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    declarations: [
+                        ConfirmationDialogComponent
+                    ],
+                    imports: [
+                        CommonModule,
+                        MatButtonModule,
+                        MatDialogModule,
+                    ],
+                    exports: [
+                        ConfirmationDialogComponent
+                    ],
+                    entryComponents: [
+                        ConfirmationDialogComponent
+                    ]
+                }]
+        }] });
+
 class MegakillCommonModule {
     static forRoot(config) {
         return {
@@ -308,23 +425,33 @@ class MegakillCommonModule {
     }
 }
 MegakillCommonModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: MegakillCommonModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-MegakillCommonModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "14.0.6", ngImport: i0, type: MegakillCommonModule, declarations: [OkPortalDialogComponent,
+MegakillCommonModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "14.0.6", ngImport: i0, type: MegakillCommonModule, declarations: [ConfirmationAsyncDialogComponent,
+        OkPortalDialogComponent,
         SelectPortalDialogComponent], imports: [MatIconModule,
-        MatDialogModule] });
+        MatDialogModule,
+        MatProgressBarModule,
+        ConfirmationDialogModule], exports: [ConfirmationDialogModule] });
 MegakillCommonModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: MegakillCommonModule, imports: [MatIconModule,
-        MatDialogModule] });
+        MatDialogModule,
+        MatProgressBarModule,
+        ConfirmationDialogModule, ConfirmationDialogModule] });
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: MegakillCommonModule, decorators: [{
             type: NgModule,
             args: [{
                     declarations: [
+                        ConfirmationAsyncDialogComponent,
                         OkPortalDialogComponent,
                         SelectPortalDialogComponent
                     ],
                     imports: [
                         MatIconModule,
-                        MatDialogModule
+                        MatDialogModule,
+                        MatProgressBarModule,
+                        ConfirmationDialogModule
                     ],
-                    exports: []
+                    exports: [
+                        ConfirmationDialogModule
+                    ]
                 }]
         }] });
 
@@ -617,14 +744,14 @@ class AuthService {
         });
     }
 }
-AuthService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: AuthService, deps: [{ token: i1$2.Router }, { token: MegakillCommonModuleConfig, optional: true }], target: i0.ɵɵFactoryTarget.Injectable });
+AuthService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: AuthService, deps: [{ token: i1$3.Router }, { token: MegakillCommonModuleConfig, optional: true }], target: i0.ɵɵFactoryTarget.Injectable });
 AuthService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: AuthService, providedIn: 'root' });
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: AuthService, decorators: [{
             type: Injectable,
             args: [{
                     providedIn: 'root'
                 }]
-        }], ctorParameters: function () { return [{ type: i1$2.Router }, { type: MegakillCommonModuleConfig, decorators: [{
+        }], ctorParameters: function () { return [{ type: i1$3.Router }, { type: MegakillCommonModuleConfig, decorators: [{
                     type: Optional
                 }] }]; } });
 
@@ -829,5 +956,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.6", ngImpor
  * Generated bundle index. Do not edit.
  */
 
-export { AG_GRID_LOCALE_TEXT_RO, ActionsRenderer, AuthGuard, AuthService, BooleanRenderer, CONTAINER_DATA, CallbackComponent, CsvService, DialogService, DownloadRenderer, FormatterService, LocalDownloadRenderer, LocalFilesService, LocalPhotoRenderer, MegakillCommonModule, RO_DATE_FORMATS, S3DownloadRenderer, S3PhotoRenderer, S3Service };
+export { AG_GRID_LOCALE_TEXT_RO, ActionsRenderer, AuthGuard, AuthService, BooleanRenderer, CONTAINER_DATA, CallbackComponent, ConfirmationAsyncDialogComponent, ConfirmationDialogComponent, ConfirmationDialogModule, CsvService, DialogService, DownloadRenderer, FormatterService, LocalDownloadRenderer, LocalFilesService, LocalPhotoRenderer, MegakillCommonModule, RO_DATE_FORMATS, S3DownloadRenderer, S3PhotoRenderer, S3Service };
 //# sourceMappingURL=megakill-common.mjs.map

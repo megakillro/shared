@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>Confirmare necesară</h1>
+<div mat-dialog-content>
+  <p [innerHTML]="message"></p>
+</div>
+<div mat-dialog-actions align="end">
+        <button mat-button [mat-dialog-close]="false" cdkFocusInitial>NU</button>
+        <button mat-button [mat-dialog-close]="true" cdkFocusInitial color="primary">DA</button>
+</div>
