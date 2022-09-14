@@ -7,6 +7,7 @@ import { MegakillCommonModuleConfig } from './config';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     MatIconModule,
     MatDialogModule,
     MatProgressBarModule,
-    ConfirmationDialogModule
+    ConfirmationDialogModule,
+    HttpClientModule
   ],
   exports: [
     ConfirmationDialogModule

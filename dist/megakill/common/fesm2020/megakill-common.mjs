@@ -6,6 +6,7 @@ import { ComponentPortal, PortalInjector } from '@angular/cdk/portal';
 import * as moment from 'moment-timezone';
 import { saveAs } from 'file-saver';
 import * as i1$1 from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import * as i1$2 from '@angular/material/snack-bar';
 import * as i3 from '@angular/material/progress-bar';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -354,10 +355,10 @@ class ConfirmationAsyncDialogComponent {
     ngOnInit() { }
 }
 ConfirmationAsyncDialogComponent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: ConfirmationAsyncDialogComponent, deps: [{ token: i1$2.MatSnackBar }, { token: i1.MatDialogRef }, { token: MAT_DIALOG_DATA }], target: i0.ɵɵFactoryTarget.Component });
-ConfirmationAsyncDialogComponent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "14.0.6", type: ConfirmationAsyncDialogComponent, selector: "megakill-confirmation-async-dialog", ngImport: i0, template: "<!-- TO DO: fix ngStyle -->\n<!-- [ngStyle]=\"{'visibility': loading ? 'visible':'hidden'}\" -->\n\n<mat-progress-bar\n  mode=\"indeterminate\"\n  ></mat-progress-bar>\n<h1 mat-dialog-title>Confirmare necesar\u0103</h1>\n<div mat-dialog-content>\n  <p [innerHTML]=\"message\"></p>\n</div>\n<div mat-dialog-actions align=\"end\">\n        <button mat-button (click)=\"reject()\" cdkFocusInitial [disabled]=\"loading\">NU</button>\n        <button mat-button (click)=\"confirm()\" color=\"primary\" [disabled]=\"loading\">{{ loading ? 'SE \u00CENCARC\u0102...' : 'DA' }}</button>\n</div>", styles: ["mat-progress-bar{transition:.125s ease-in-out all;top:-25px;left:-25px;width:calc(100% + 50px)}\n"], dependencies: [{ kind: "directive", type: i1.MatDialogTitle, selector: "[mat-dialog-title], [matDialogTitle]", inputs: ["id"], exportAs: ["matDialogTitle"] }, { kind: "directive", type: i1.MatDialogContent, selector: "[mat-dialog-content], mat-dialog-content, [matDialogContent]" }, { kind: "directive", type: i1.MatDialogActions, selector: "[mat-dialog-actions], mat-dialog-actions, [matDialogActions]", inputs: ["align"] }, { kind: "component", type: i3.MatProgressBar, selector: "mat-progress-bar", inputs: ["color", "value", "bufferValue", "mode"], outputs: ["animationEnd"], exportAs: ["matProgressBar"] }] });
+ConfirmationAsyncDialogComponent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "14.0.6", type: ConfirmationAsyncDialogComponent, selector: "megakill-confirmation-async-dialog", ngImport: i0, template: "<!-- TO DO: fix ngStyle -->\n<!-- [ngStyle]=\"{'visibility': loading ? 'visible':'hidden'}\" -->\n\n<mat-progress-bar\n  mode=\"indeterminate\"\n  ></mat-progress-bar>\n  <!-- TO DO: i18n -->\n<h1 mat-dialog-title>Confirmare necesar\u0103</h1>\n<div mat-dialog-content>\n  <p [innerHTML]=\"message\"></p>\n</div>\n<div mat-dialog-actions align=\"end\">\n        <button mat-button (click)=\"reject()\" cdkFocusInitial [disabled]=\"loading\">NU</button>\n        <button mat-button (click)=\"confirm()\" color=\"primary\" [disabled]=\"loading\">{{ loading ? 'SE \u00CENCARC\u0102...' : 'DA' }}</button>\n</div>", styles: ["mat-progress-bar{transition:.125s ease-in-out all;top:-25px;left:-25px;width:calc(100% + 50px)}\n"], dependencies: [{ kind: "directive", type: i1.MatDialogTitle, selector: "[mat-dialog-title], [matDialogTitle]", inputs: ["id"], exportAs: ["matDialogTitle"] }, { kind: "directive", type: i1.MatDialogContent, selector: "[mat-dialog-content], mat-dialog-content, [matDialogContent]" }, { kind: "directive", type: i1.MatDialogActions, selector: "[mat-dialog-actions], mat-dialog-actions, [matDialogActions]", inputs: ["align"] }, { kind: "component", type: i3.MatProgressBar, selector: "mat-progress-bar", inputs: ["color", "value", "bufferValue", "mode"], outputs: ["animationEnd"], exportAs: ["matProgressBar"] }] });
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: ConfirmationAsyncDialogComponent, decorators: [{
             type: Component,
-            args: [{ selector: 'megakill-confirmation-async-dialog', template: "<!-- TO DO: fix ngStyle -->\n<!-- [ngStyle]=\"{'visibility': loading ? 'visible':'hidden'}\" -->\n\n<mat-progress-bar\n  mode=\"indeterminate\"\n  ></mat-progress-bar>\n<h1 mat-dialog-title>Confirmare necesar\u0103</h1>\n<div mat-dialog-content>\n  <p [innerHTML]=\"message\"></p>\n</div>\n<div mat-dialog-actions align=\"end\">\n        <button mat-button (click)=\"reject()\" cdkFocusInitial [disabled]=\"loading\">NU</button>\n        <button mat-button (click)=\"confirm()\" color=\"primary\" [disabled]=\"loading\">{{ loading ? 'SE \u00CENCARC\u0102...' : 'DA' }}</button>\n</div>", styles: ["mat-progress-bar{transition:.125s ease-in-out all;top:-25px;left:-25px;width:calc(100% + 50px)}\n"] }]
+            args: [{ selector: 'megakill-confirmation-async-dialog', template: "<!-- TO DO: fix ngStyle -->\n<!-- [ngStyle]=\"{'visibility': loading ? 'visible':'hidden'}\" -->\n\n<mat-progress-bar\n  mode=\"indeterminate\"\n  ></mat-progress-bar>\n  <!-- TO DO: i18n -->\n<h1 mat-dialog-title>Confirmare necesar\u0103</h1>\n<div mat-dialog-content>\n  <p [innerHTML]=\"message\"></p>\n</div>\n<div mat-dialog-actions align=\"end\">\n        <button mat-button (click)=\"reject()\" cdkFocusInitial [disabled]=\"loading\">NU</button>\n        <button mat-button (click)=\"confirm()\" color=\"primary\" [disabled]=\"loading\">{{ loading ? 'SE \u00CENCARC\u0102...' : 'DA' }}</button>\n</div>", styles: ["mat-progress-bar{transition:.125s ease-in-out all;top:-25px;left:-25px;width:calc(100% + 50px)}\n"] }]
         }], ctorParameters: function () { return [{ type: i1$2.MatSnackBar }, { type: i1.MatDialogRef }, { type: undefined, decorators: [{
                     type: Inject,
                     args: [MAT_DIALOG_DATA]
@@ -430,11 +431,13 @@ MegakillCommonModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", ve
         SelectPortalDialogComponent], imports: [MatIconModule,
         MatDialogModule,
         MatProgressBarModule,
-        ConfirmationDialogModule], exports: [ConfirmationDialogModule] });
+        ConfirmationDialogModule,
+        HttpClientModule], exports: [ConfirmationDialogModule] });
 MegakillCommonModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: MegakillCommonModule, imports: [MatIconModule,
         MatDialogModule,
         MatProgressBarModule,
-        ConfirmationDialogModule, ConfirmationDialogModule] });
+        ConfirmationDialogModule,
+        HttpClientModule, ConfirmationDialogModule] });
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.6", ngImport: i0, type: MegakillCommonModule, decorators: [{
             type: NgModule,
             args: [{
@@ -447,7 +450,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.6", ngImpor
                         MatIconModule,
                         MatDialogModule,
                         MatProgressBarModule,
-                        ConfirmationDialogModule
+                        ConfirmationDialogModule,
+                        HttpClientModule
                     ],
                     exports: [
                         ConfirmationDialogModule
